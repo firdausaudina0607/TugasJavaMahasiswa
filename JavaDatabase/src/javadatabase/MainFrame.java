@@ -4,6 +4,7 @@
  */
 package javadatabase;
 import javadatabase.DbConnection;
+import java.io.File;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.*;
@@ -50,6 +51,7 @@ public class MainFrame extends javax.swing.JFrame {
         tblMahasiswa = new javax.swing.JTable();
         btnHapus = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
+        btnUpload = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
@@ -63,7 +65,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        btnSubmit.setText("Tambah");
+        btnSubmit.setText("Insert");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSubmitActionPerformed(evt);
@@ -111,6 +113,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        btnUpload.setText("Upload");
+        btnUpload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUploadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -133,6 +142,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnUpload, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -155,7 +166,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEdit)
                     .addComponent(btnHapus)
-                    .addComponent(btnSubmit))
+                    .addComponent(btnSubmit)
+                    .addComponent(btnUpload))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(87, Short.MAX_VALUE))
@@ -227,6 +239,28 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNamaActionPerformed
 
+    private void btnUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadActionPerformed
+        // TODO add your handling code here:
+        JFileChooser chooser = new JFileChooser();
+    int result = chooser.showOpenDialog(this);
+    
+    if (result == JFileChooser.APPROVE_OPTION) {
+        File file = chooser.getSelectedFile();
+        
+        try {
+            
+            dao.uploadCSV(file);
+            JOptionPane.showMessageDialog(this, "Data dari CSV berhasil diupload!");
+            loadData(); 
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal upload: " + e.getMessage());
+            e.printStackTrace();
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Upload dibatalkan!");
+    }
+    }//GEN-LAST:event_btnUploadActionPerformed
+
     private void insert(){
         
     }
@@ -278,6 +312,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnSubmit;
+    private javax.swing.JButton btnUpload;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblNama;
